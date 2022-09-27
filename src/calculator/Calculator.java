@@ -1,6 +1,8 @@
 package calculator;
 
 import stack.Stack;
+import token.Token;
+import token.TokenType;
 
 public class Calculator {
 
@@ -10,29 +12,36 @@ public class Calculator {
         operands = new Stack<>();
     }
 
-    public void saveOperand(Integer operand) {
-        operands.push(operand);
+    public void saveOperand(Token token) throws RuntimeException {
+        if (token.type == TokenType.NUM) {
+            operands.push(Integer.valueOf(token.lexeme));
+        } else {
+            throw new RuntimeException("Operando Inválido");
+        }
+
     }
 
-    public Integer calculate(Character operator) {
+    public Integer calculate(Token token) throws RuntimeException {
 
         Integer fistOperand = operands.pop();
         Integer secondOperand = operands.pop();
         Integer result = 0;
 
-        switch (operator) {
-            case '+':
+        switch (token.type) {
+            case PLUS:
                 result =  secondOperand + fistOperand;
                 break;
-            case '-':
+            case MINUS:
                 result = secondOperand - fistOperand;
                 break;
-            case '*':
+            case STAR:
                 result = secondOperand * fistOperand;
                 break;
-            case '/':
+            case SLASH:
                 result = secondOperand / fistOperand;
                 break;
+            default:
+                throw new RuntimeException("Operador Inválido");
         }
 
         operands.push(result);
