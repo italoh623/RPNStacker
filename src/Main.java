@@ -50,7 +50,6 @@ public class Main {
 
             Token token;
 
-            Token ret = null;
             if(Regex.isNum(line)) {
                 token = new Token(TokenType.NUM, line);
             } else if (Regex.isOP(line)) {
