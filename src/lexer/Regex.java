@@ -1,10 +1,9 @@
 package lexer;
 
-import token.TokenType;
-
 public class Regex {
 
     private static final String NUM_REGEX = "(\\d)+";
+    private static final String ID_REGEX = "([_a-zA-Z][_a-zA-Z0-9]*)";
     private static final String OP_REGEX = "(\\+|-|\\*|/)";
     private static final String PLUS_REGEX = "(\\+)";
     private static final String MINUS_REGEX = "(\\-)";
@@ -13,6 +12,10 @@ public class Regex {
 
     public static boolean isNum(String token) {
         return token.matches(NUM_REGEX);
+    }
+
+    public static boolean isID(String token) {
+        return token.matches(ID_REGEX);
     }
 
     public static boolean isOP(String token) {

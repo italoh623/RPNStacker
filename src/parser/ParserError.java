@@ -14,24 +14,15 @@
  *     http://www.cin.ufpe.br/~hemr/
  * ******************************************************************/
 
+package parser;
+
 /**
  * @author Henrique Rebelo
  */
+public class ParserError extends RuntimeException{
+    private static final long serialVersionUID = 1L;
 
-package token;
-
-public class Token {
-
-    public final TokenType type; // token type
-    public final String lexeme; // token value
-
-    public Token (TokenType type, String value) {
-        this.type = type;
-        this.lexeme = value;
-    }
-
-    @Override
-    public String toString() {
-        return "Token [type=" + this.type + ", lexeme=" + this.lexeme + "]";
+    public ParserError(String msg) {
+        super(msg);
     }
 }

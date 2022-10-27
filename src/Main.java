@@ -1,68 +1,86 @@
-import calculator.Calculator;
-import lexer.Regex;
-import token.Token;
-import token.TokenType;
-import utils.Number;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
-import java.util.Stack;
+
+import expr.Expr;
+import interpreter.Interpreter;
+import interpreter.InterpreterError;
+import lexer.LexError;
+import lexer.Scanner;
+import lexer.Token;
+import parser.Parser;
+import parser.ParserError;
 
 public class Main {
-    public static void main(String[] args) {
 
+    private static final Interpreter interpreter = new Interpreter(new HashMap<>());
+    private static boolean hasError = false;
+
+    public static void main(String[] args) throws IOException {
+        args = new String [2];
+        args [0] = "C:\\Users\\Antonio\\IdeaProjects\\RPNStacker Adhoc\\src\\Calc1.stk";
+        args [1] = "C:\\Users\\Antonio\\IdeaProjects\\RPNStacker Adhoc\\src\\Calc2.stk";
+
+        run(args);
+    }
+
+    private static void runFile(String sourceFilePath) throws IOException {
+        byte[] bytes = Files.readAllBytes(Paths.get(sourceFilePath));
+        String sourceProgram =
+                new String(bytes, Charset.defaultCharset());
+        run(sourceProgram);
+
+        if (hasError) System.exit(65);
+    }
+
+    private static void run(String source) {
         try {
-            List<Token> tokens = scan(System.getProperty("user.dir")+ "\\src\\Calc1.stk");
-            Calculator calculator = new Calculator();
-            int result;
+            Scanner scanner = new Scanner(source);
+            List<Token> tokens = scanner.scan();
 
-            while (!tokens.isEmpty()) {
-                Token token = tokens.remove(0);
-                System.out.println(token);
+            printTokens(tokens);
 
-                if (token.type == TokenType.NUM) {
-                    calculator.saveOperand(token);
-                } else if (token.type != TokenType.NUM) {
-                    calculator.calculate(token);
-                }
-            }
+            Parser parser = new Parser(tokens);
+            Expr expr = parser.parse();
 
-            result = calculator.getResult();
-            System.out.println("\nSaida: " + result + "\n");
-        } catch (FileNotFoundException e) {
-            System.out.println("Arquivo não encontrado");
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
+            interpreter.env.put("y", "10");
+            interpreter.env.put("x", "3");
+
+            System.out.println(interpreter.interp(expr));
+        } catch (LexError e) {
+            error("Lex", e.getMessage());
+            hasError = true;
+        }
+        catch (ParserError e) {
+            error("Parser", e.getMessage());
+            hasError = true;
+        }
+        catch (InterpreterError e) {
+            error("Interpreter", e.getMessage());
+            hasError = true;
         }
     }
 
-    private static List<Token> scan(String filename) throws FileNotFoundException {
-        File file = new File(filename);
-
-        Scanner scan = new Scanner(file);
-        List<Token> tokens = new ArrayList<>();
-
-        while (scan.hasNextLine()) {
-            String line = scan.nextLine().trim();
-
-            Token token;
-
-            if(Regex.isNum(line)) {
-                token = new Token(TokenType.NUM, line);
-            } else if (Regex.isOP(line)) {
-                token = new Token(Regex.getOPTokenType(line), line);
-            } else {
-                throw new RuntimeException("Unexpected character: "+ line);
+    private static void run(String[] args) throws IOException {
+        if(args.length > 0) {
+            for (String arg : args) {
+                runFile(arg);
             }
-
-            tokens.add(token);
         }
+    }
 
-        scan.close();
+    private static void printTokens(List<Token> tokens) {
+        for (Token token : tokens) {
+            System.out.println(token);
+        }
+        System.out.println();
+    }
 
-        return tokens;
+    private static void error(String typeError, String message) {
+        System.err.println("[" + typeError + "] Error: " + message);
+        hasError = true;
     }
 }

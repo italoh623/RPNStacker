@@ -1,8 +1,8 @@
 package calculator;
 
 import stack.Stack;
-import token.Token;
-import token.TokenType;
+import lexer.Token;
+import lexer.TokenType;
 
 public class Calculator {
 
