@@ -29,17 +29,17 @@ public class Scanner {
     }
 
     private Token getToken(String token) {
-        Token ret = null;
+        Token output = null;
         if (Regex.isNum(token)) {
-            ret = new Token(TokenType.NUM, token);
+            output = new Token(TokenType.NUM, token);
         } else if (Regex.isID(token)) {
-            ret = new Token(TokenType.ID, token);
+            output = new Token(TokenType.ID, token);
         } else if(Regex.isOP(token)) {
-            ret = new Token(Regex.getOPTokenType(token), token);
+            output = new Token(Regex.getOPTokenType(token), token);
         } else {
             throw new LexError("Unexpected character: "+token);
         }
 
-        return ret;
+        return output;
     }
 }

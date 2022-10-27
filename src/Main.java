@@ -21,8 +21,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         args = new String [2];
-        args [0] = "C:\\Users\\Antonio\\IdeaProjects\\RPNStacker Adhoc\\src\\Calc1.stk";
-        args [1] = "C:\\Users\\Antonio\\IdeaProjects\\RPNStacker Adhoc\\src\\Calc2.stk";
+        args [0] = System.getProperty("user.dir")+ "\\src\\Calc1.stk";
+        args [1] = System.getProperty("user.dir")+ "\\src\\Calc2.stk";
 
         run(args);
     }
