@@ -16,9 +16,6 @@
 
 package parser;
 
-/**
- * @author Henrique Rebelo
- */
 public class ParserError extends RuntimeException{
     private static final long serialVersionUID = 1L;
 

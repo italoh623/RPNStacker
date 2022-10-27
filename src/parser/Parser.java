@@ -7,9 +7,6 @@ import expr.Expr;
 import lexer.Token;
 import lexer.TokenType;
 
-/**
- * @author Henrique Rebelo
- */
 public class Parser {
 
     private final List<Token> tokens;

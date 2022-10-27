@@ -14,10 +14,6 @@
  *     http://www.cin.ufpe.br/~hemr/
  * ******************************************************************/
 
-/**
- * @author Henrique Rebelo
- */
-
 package lexer;
 
 public class Token {

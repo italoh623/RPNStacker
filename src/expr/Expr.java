@@ -2,9 +2,6 @@ package expr;
 
 import lexer.Token;
 
-/**
- * @author Henrique Rebelo
- */
 public abstract class Expr {
 
     // visitors for expressions

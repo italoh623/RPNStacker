@@ -16,9 +16,6 @@
 
 package lexer;
 
-/**
- * @author Henrique Rebelo
- */
 public class LexError extends RuntimeException{
     private static final long serialVersionUID = 1L;
 
